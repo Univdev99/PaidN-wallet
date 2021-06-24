@@ -1,6 +1,6 @@
 # BoilerPlate React Klipp
 
-Proyecto Boilerplate para la extension de Chrome de Klipp.
+Boilerplate project for the Chrome extension of Klip
 
 Get in to the folder of the project and execute:
 
