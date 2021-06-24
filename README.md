@@ -2,11 +2,10 @@
 
 Proyecto Boilerplate para la extension de Chrome de Klipp.
 
-
-Accede al directiorio del proyecto y ejecuta:
+Get in to the folder of the project and execute:
 
 ### `npm install`
 ### `npm start`
 
-Corre el aplicativo en.\
+Run the dapp on.\
 [http://localhost:3000](http://localhost:3000).
