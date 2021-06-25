@@ -1,9 +1,10 @@
+//@ts-ignore
 import IPFS from 'ipfs-core'
 import { DID } from 'dids'
 import { ethers } from 'ethers'
 import moment from 'moment'
 import IPFSClient from 'ipfs-http-client'
-import { SwarmNodeSignedContent } from '../shared/SwarmNodeSignedContent'
+//import { SwarmNodeSignedContent } from '../shared/SwarmNodeSignedContent'
 import { keccak256 } from 'ethers/lib/utils'
 const Ipld = require('ipld')
 const IpfsBlockService = require('ipfs-block-service')
@@ -11,7 +12,7 @@ const multicodec = require('multicodec')
 
 export type DocumentMetadata = any
 
-const initIpld = async (repo) => {
+const initIpld = async (repo: any) => {
   const blockService = new IpfsBlockService(repo)
   return new Ipld({ blockService: blockService })
 }
@@ -19,7 +20,9 @@ const initIpld = async (repo) => {
 const MAINNET = `https://mainnet.infura.io/v3/92ed13edfad140409ac24457a9c4e22d`
 export class IPFSManager {
   format = 'dag-cbor'
+  //@ts-ignore
   client: IPFS.IPFSRepo
+  //@ts-ignore
   provider: ethers.providers.JsonRpcProvider
   ipld: any
 
@@ -51,7 +54,7 @@ export class IPFSManager {
     try {
       let query = ''
       const keys = await this.client.key.list()
-      const { id } = keys.find((i) => i.name === key)
+      const { id } = keys.find((i:any) => i.name === key)
       for await (query of this.client.name.resolve(`/ipns/${id}`)) {
       }
       return query.replace('/ipfs/', '')
@@ -103,30 +106,30 @@ export class IPFSManager {
     return jwsCid.toString()
   }
 
-  createSignedContent({
-    contentType,
-    name,
-    lastModified,
-    size,
-    content,
-    hash,
-    documentPubCert,
-    documentSignature,
-    signaturePreset,
-  }) {
-    return {
-      contentType,
-      name,
-      lastModified,
-      size,
-      content,
-      hash,
-      created: moment().unix(),
-      documentPubCert,
-      documentSignature,
-      signaturePreset,
-    } as SwarmNodeSignedContent
-  }
+  // createSignedContent({
+  //   contentType,
+  //   name,
+  //   lastModified,
+  //   size,
+  //   content,
+  //   hash,
+  //   documentPubCert,
+  //   documentSignature,
+  //   signaturePreset,
+  // }) {
+  //   return {
+  //     contentType,
+  //     name,
+  //     lastModified,
+  //     size,
+  //     content,
+  //     hash,
+  //     created: moment().unix(),
+  //     documentPubCert,
+  //     documentSignature,
+  //     signaturePreset,
+  //   } as SwarmNodeSignedContent
+  // }
 
   async addIndex(did: DID, documents: any[]) {
     // sign the payload as dag-cbor
@@ -167,12 +170,12 @@ export class IPFSManager {
     return did.verifyJWS(obj.metadata)
   }
 
-  async encryptObject(did: DID, cleartext, dids: string[]) {
+  async encryptObject(did: DID, cleartext: any, dids: string[]) {
     const jwe = await did.createDagJWE(cleartext, dids)
     return this.client.dag.put(jwe, multicodec.DAG_CBOR)
   }
 
-  async decryptObject(did: DID, cid, query) {
+  async decryptObject(did: DID, cid: any, query:any) {
     const jwe = (await this.client.dag.get(cid, query)).value
     const cleartext = await did.decryptDagJWE(jwe)
     return cleartext
