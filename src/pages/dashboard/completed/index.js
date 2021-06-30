@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import NavBar from "../../../components/layout/NavBar/index.js";
+import TransactionDetail from '../details-transaction/index';
+import { goTo } from "react-chrome-extension-router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,21 +41,24 @@ function Done() {
     const classes = useStyles();
 
     return (
-        <div style={styles.content}>
-            <Card className={classes.root}>
-                <Typography style={{textAlign: 'center'}} gutterBottom variant="h3" component="h2">
-                    DONE!
-                </Typography>
-                <Typography style={{textAlign: 'center'}} gutterBottom variant="h5" component="h2">
-                    Congratulations!
-                </Typography>
-                <div style={{marginTop: 20}}>
-                    <button onClick={() => history.push('/transaction-details')} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
-                        GO TO NEXT
-                    </button>
-                </div>
-            </Card>
-        </div>
+        <>
+            <NavBar />
+            <div style={styles.content}>
+                <Card className={classes.root}>
+                    <Typography style={{textAlign: 'center'}} gutterBottom variant="h3" component="h2">
+                        DONE!
+                    </Typography>
+                    <Typography style={{textAlign: 'center'}} gutterBottom variant="h5" component="h2">
+                        Congratulations!
+                    </Typography>
+                    <div style={{marginTop: 20}}>
+                        <button onClick={() => goTo(TransactionDetail)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                            GO TO NEXT
+                        </button>
+                    </div>
+                </Card>
+            </div>
+        </>
     );
 }
 

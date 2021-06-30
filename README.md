@@ -1,11 +1,12 @@
 # BoilerPlate React Klipp
 
-Boilerplate project for the Chrome extension of Klip
+Proyecto Boilerplate para la extension de Chrome de Klipp.
 
-Get in to the folder of the project and execute:
+
+Accede al directiorio del proyecto y ejecuta:
 
 ### `npm install`
 ### `npm start`
 
-Run the dapp on.\
+Corre el aplicativo en.\
 [http://localhost:3000](http://localhost:3000).

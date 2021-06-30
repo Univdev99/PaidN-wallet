@@ -1,31 +1,22 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
-import NavBar from "./components/layout/NavBar/index";
 import Login from "./pages/auth/access/index";
 import routes from "./config/routes"
+import {
+    goBack,
+    goTo,
+    popToTop,
+    Link,
+    Router,
+    getCurrent,
+    getComponentStack,
+  } from 'react-chrome-extension-router';
 
 function App() {
   return (
     <Router className="App">
         <div>
-            <NavBar />
-            <Switch>
-                <Route exact path="/">
-                    <Login />
-                </Route>
-                {routes.map((route, index) => {
-                    return route.component ? (
-                        <Route
-                            key={index}
-                            path={route.path}
-                            exact
-                            name={route.name}
-                        >
-                          <route.component />
-                        </Route>
-                    ) : null;
-                })}
-            </Switch>
+            
+            <Login />
         </div>
     </Router>
   );

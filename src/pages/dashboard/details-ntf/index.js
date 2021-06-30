@@ -7,6 +7,18 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import NavBar from '../../../components/layout/NavBar/index';
+import SignedMedia from '../signedMedia/index';
+
+import {
+    goBack,
+    goTo,
+    popToTop,
+    Link,
+    Router,
+    getCurrent,
+    getComponentStack,
+  } from 'react-chrome-extension-router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,29 +47,32 @@ function NTFDetails() {
     const classes = useStyles();
 
     return (
-        <div style={styles.content}>
-            <Card className={classes.root}>
-                <Typography style={{textAlign: 'center'}} gutterBottom variant="h4" component="h2">
-                    NTF Details
-                </Typography>
-                <div style={{marginTop: 20, width: '100%'}}>
-                    <TextField id="outlined-search" style={{width: '100%'}} label="My Fee" type="number" variant="outlined" />
-                </div>
-                <div style={{marginTop: 20, width: '100%'}}>
-                    <TextField id="outlined-search" style={{width: '100%'}} label="Ammount" type="number" variant="outlined" />
-                </div>
-                <div style={{marginTop: 20}}>
-                    <button onClick={() => history.push('/signed-media')} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
-                        CONTINUE
-                    </button>
-                </div>
-                <div style={{marginTop: 20}}>
-                    <Button size="large" color="primary" onClick={() => history.push('/upload')}>
-                        RETURN
-                    </Button>
-                </div>
-            </Card>
-        </div>
+        <>
+            <NavBar />
+            <div style={styles.content}>
+                <Card className={classes.root}>
+                    <Typography style={{textAlign: 'center'}} gutterBottom variant="h4" component="h2">
+                        NTF Details
+                    </Typography>
+                    <div style={{marginTop: 20, width: '100%'}}>
+                        <TextField id="outlined-search" style={{width: '100%'}} label="My Fee" type="number" variant="outlined" />
+                    </div>
+                    <div style={{marginTop: 20, width: '100%'}}>
+                        <TextField id="outlined-search" style={{width: '100%'}} label="Ammount" type="number" variant="outlined" />
+                    </div>
+                    <div style={{marginTop: 20}}>
+                        <button onClick={() => goTo(SignedMedia)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                            CONTINUE
+                        </button>
+                    </div>
+                    <div style={{marginTop: 20}}>
+                        <Button size="large" color="primary" onClick={() => goBack()}>
+                            RETURN
+                        </Button>
+                    </div>
+                </Card>
+            </div>
+        </>
     );
 }
 
