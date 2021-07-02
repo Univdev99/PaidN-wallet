@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import NavBar from '../../../components/layout/NavBar/index';
 import UploadNTF from '../../dashboard/upload/index';
+import XDVNodeProvider from '../../dashboard/XDVHandler';
 import {
     goBack,
     goTo,
@@ -37,6 +38,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+async function createWallet(){
+    console.log('Inicio de CREATEWALLET()');
+    var input = document.getElementById('outlined-multiline-static');
+    var inputValue = input.value;
+    console.log('Input Value Del Componente: ',inputValue);
+    const xdvProvider = new XDVNodeProvider();
+    const wallet = await xdvProvider.createWallet('mywallet1', inputValue);
+    console.log('Output al finalizar CREATE WALLET', wallet);
+    //TODO: fix NFT name
+    goTo(UploadNTF);
+}
+
 function NewWallet() {
     const history = useHistory();
     const classes = useStyles();
@@ -56,7 +69,7 @@ function NewWallet() {
                     <div style={{marginTop: 20, width: '100%'}}>
                         <TextField
                             id="outlined-multiline-static"
-                            label="12 Words"
+                            label="passphrase"
                             multiline
                             rows={4}
                             style={{width: '100%'}}
@@ -64,7 +77,8 @@ function NewWallet() {
                         />
                     </div>
                     <div style={{marginTop: 20}}>
-                        <button onClick={() => goTo(UploadNTF)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                        <button onClick={() => {createWallet()}} 
+                            style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
                             SUBMIT
                         </button>
                     </div>
