@@ -27,6 +27,7 @@ export class IPFSManager {
   ipld: any
 
   async start() {
+    //TODO change IPFS url
     this.client = IPFSClient({ url: `https://ipfs.xdv.digital` })
     this.ipld = await initIpld(this.client)
   }
@@ -105,31 +106,6 @@ export class IPFSManager {
     await this.client.block.put(linkedBlock, { cid: jws.link })
     return jwsCid.toString()
   }
-
-  // createSignedContent({
-  //   contentType,
-  //   name,
-  //   lastModified,
-  //   size,
-  //   content,
-  //   hash,
-  //   documentPubCert,
-  //   documentSignature,
-  //   signaturePreset,
-  // }) {
-  //   return {
-  //     contentType,
-  //     name,
-  //     lastModified,
-  //     size,
-  //     content,
-  //     hash,
-  //     created: moment().unix(),
-  //     documentPubCert,
-  //     documentSignature,
-  //     signaturePreset,
-  //   } as SwarmNodeSignedContent
-  // }
 
   async addIndex(did: DID, documents: any[]) {
     // sign the payload as dag-cbor

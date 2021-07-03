@@ -10,6 +10,12 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import NavBar from '../../../components/layout/NavBar/index';
 import NTFDetails from '../details-ntf/index';
 
+import { DIDManager } from "./DIDManager";
+import { IPFSManager } from "../IPFSManager";
+import { ethers } from "ethers";
+import { DID } from "dids";
+import Web3 from "web3";
+
 import {
     goBack,
     goTo,
@@ -18,7 +24,12 @@ import {
     Router,
     getCurrent,
     getComponentStack,
-  } from 'react-chrome-extension-router';
+} from 'react-chrome-extension-router';
+
+import { Web } from "@material-ui/icons";
+
+const KLIP = require("../../../contracts/KLIP.sol/KLIP.json");
+const MockCoin = require("../../../contracts/MockCoin.sol/MockCoin");
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,10 +56,138 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+let videoFile = null;
+let transactionStatus='';
+let ipfsId = '';
+let localAddress = null;
+let ethersInstance = null;
+let web3 = null;
+let ethersContract = null;
+let contract = null;
+let mockContract;
+let daiContract = null;
+let ipfs = null;
+let did = null;
+let didManager = null;
+let transationAddress = null;
+let indexes = null;
+
+
+async function bindContracts() {
+    console.log('Beginning of BINDCONTRACTS()');
+    ethersInstance = new ethers.providers.Web3Provider(
+        web3.givenProvider
+    );
+    const contractAddress = "0x03659591c344e90fD926cf9E4b463C5530422698";
+    const mockContractAddress = "0xeB398229cDBB348E6076fd89d488FD14a05cA3B8";
+    contract = new web3.eth.Contract(KLIP.abi, contractAddress);
+    mockContract = new web3.eth.Contract(
+        MockCoin.abi,
+        mockContractAddress
+    );
+    ethersContract = new ethers.Contract(
+        contractAddress,
+        KLIP.abi,
+        ethersInstance.getSigner(0)
+    );
+
+    console.log('End of BINDCONTRACTS()');
+};
+
+async function createDocumentNode(files) {
+    // this.setEstimateGasDialog = false;
+    // this.setTransactionStatusDialog = true;
+    // this.showTransactionCancelBtn = false;
+    // this.transationAddress = "";
+    // this.ipfsId = "";
+    // this.showVideo = false;
+    console.log('Beginning of CREATEDOCUMENTNODE()');
+
+    try {
+        //this.transactionStatus = "Saving file...";
+        videoFile = document.getElementById('contained-button-file');
+        const ipfs = new IPFSManager();
+        await ipfs.start();
+        indexes = await ipfs.addVideoObject(did, videoFile);
+
+        console.log("files", videoFile);
+        transactionStatus = "Creating transaction on the blockchain...";
+        const bob = contract.defaultAccount;
+
+        await daiContract.methods
+        .approve(contract._address, "1000000000000000000")
+        .send({
+            gasPrice: "22000000000",
+            gas: 400000,
+            from: contract.defaultAccount,
+        });
+
+        const txmint = await contract.methods
+        .mint(
+          "1", // qty
+            bob,
+            did.id, //
+            web3.utils.fromUtf8(this.indexes),
+            false, // encrypted
+            "xdv",
+            did.id
+        )
+        .send({
+            gasPrice: "22000000000",
+            gas: 4000000,
+            from: contract.defaultAccount,
+        });
+
+      //await txmint.wait(1);
+        const filter = contract.getPastEvents("DocumentAnchored", {
+            toBlock: "latest",
+            fromBlock: 0,
+            filter: { user: localAddress },
+        });
+
+        const response = await filter;
+        const blockItem = response.reverse()[0];
+        const root = await ipfs.getObject(
+            web3.utils.hexToUtf8(blockItem.returnValues.documentURI)
+        );
+        const document = root.value;
+        console.log("ROOT VALUE", root.value);
+        console.log("document", document);
+        //videoBase64 = root.value.content;
+
+        // this.loading = false;
+        // this.canUpload = false;
+        // this.close();
+        console.log(txmint);
+        // this.showTransactionCancelBtn = true;
+        transationAddress = txmint.transactionHash;
+        ipfsId = indexes;
+        transactionStatus = "";
+      //await this.fetchDocuments();
+
+        // this.instanceVideoPlayer(
+        //     "https://ipfs.io/ipfs/" + root.value.metadata.videourl.toString()
+        // );
+
+
+    } catch (e) {
+        transactionStatus = "An error has occurred";
+        console.log("confirmation error", e);
+    }
+}
+
 function Upload() {
     const history = useHistory();
     const classes = useStyles();
+    console.log('Beginning of UPLOAD() component');
+    web3 = new Web3();
+    web3.eth.defaultAccount = '';
 
+    bindContracts();
+
+    ipfs = new IPFSManager();
+    didManager = new DIDManager();
+    
     return (
         <>
         <NavBar />
@@ -99,7 +238,7 @@ function Upload() {
                         />
                     </div>
                     <div style={{marginTop: 20}}>
-                        <button onClick={() => goTo(NTFDetails)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                        <button onClick={() =>  createDocumentNode()} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
                             CONTINUE
                         </button>
                     </div>
