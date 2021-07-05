@@ -1,6 +1,7 @@
 import styles from "./styles.js";
 // import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +11,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import NavBar from '../../../components/layout/NavBar/index';
 import NTFDetails from '../details-ntf/index';
 
-import { DIDManager } from "./DIDManager";
+import DIDManager from "../../dashboard/DIDManager";
 import { IPFSManager } from "../IPFSManager";
 import { ethers } from "ethers";
 import { DID } from "dids";
@@ -94,7 +95,7 @@ async function bindContracts() {
     console.log('End of BINDCONTRACTS()');
 };
 
-async function createDocumentNode(files) {
+async function createDocumentNode(file) {
     // this.setEstimateGasDialog = false;
     // this.setTransactionStatusDialog = true;
     // this.showTransactionCancelBtn = false;
@@ -104,8 +105,9 @@ async function createDocumentNode(files) {
     console.log('Beginning of CREATEDOCUMENTNODE()');
 
     try {
-        //this.transactionStatus = "Saving file...";
-        videoFile = document.getElementById('contained-button-file');
+        videoFile = new File([""], file);
+
+        debugger
         const ipfs = new IPFSManager();
         await ipfs.start();
         indexes = await ipfs.addVideoObject(did, videoFile);
@@ -177,6 +179,7 @@ async function createDocumentNode(files) {
 }
 
 function Upload() {
+    const uploadInputRef = useRef(null);
     const history = useHistory();
     const classes = useStyles();
     console.log('Beginning of UPLOAD() component');
@@ -198,6 +201,7 @@ function Upload() {
                     </Typography>
                     <div style={{marginTop: 20, display: 'flex', justifyContent: 'center', flexDirection: 'row'}}>
                         <input
+                            ref={uploadInputRef}
                             accept="video/*"
                             className={classes.input}
                             id="contained-button-file"
@@ -238,7 +242,7 @@ function Upload() {
                         />
                     </div>
                     <div style={{marginTop: 20}}>
-                        <button onClick={() =>  createDocumentNode()} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                        <button onClick={() =>  createDocumentNode(uploadInputRef.current.value)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
                             CONTINUE
                         </button>
                     </div>
