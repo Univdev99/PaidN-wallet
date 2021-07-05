@@ -27,7 +27,6 @@ export default class XDVNodeProvider {
       //   walletId: acct.walletId,
       // })
       
-    debugger
     const wallet = await xdvWallet.createEd25519({
       passphrase: passphrase,
       walletId: walletid,
