@@ -4,7 +4,7 @@ import KeyResolver from "@ceramicnetwork/key-did-resolver";
 import { DID } from "dids";
 import { arrayify, mnemonicToSeed } from "ethers/lib/utils";
 
-export class DIDManager {
+export default class DIDManager {
   /**
    * Create 3ID
    * using XDV
