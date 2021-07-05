@@ -1,5 +1,6 @@
 import './App.css';
-import Login from "./pages/auth/access/index";
+// import Login from "./pages/auth/access/index";
+import Login from "./pages/apps/auth/access/index";
 import routes from "./config/routes"
 import {
     goBack,
@@ -15,7 +16,6 @@ function App() {
   return (
     <Router className="App">
         <div>
-            
             <Login />
         </div>
     </Router>
