@@ -55,29 +55,41 @@ function SaveSeedPhrase() {
     var inputValue = localStorage.getItem('initialText')
     const [text, setText] = useState(inputValue);
     const [state, setState] = useState({
-        passphrase: '',
+        seed_phrase: '',
     });
-    const [validatePassphrase, setValidatePassphrase] = useState(true);
+    const [validateSeedPhrase, setValidateSeedPhrase] = useState(true);
     
     
     const handleInput = (e) => {
         const { name, value } = e.target
+
+        setState({
+            ...state,
+            [name]: value
+        })
+        let split_value = value.split(" ")
+        let len = split_value.length;
+        console.log(split_value[len - 1])
+        if (len === 12 && split_value[len - 1] !== '') //15 words, hardcoded, probably change this to maxwords, or whatever.
+            setValidateSeedPhrase(false)
+        else
+            setValidateSeedPhrase(true)
         // console.log(name)
         // console.log(value)
-        if (state.passphrase.length === 11) {
-            setState({
-                ...state,
-                [name]: value
-            })
-            setValidatePassphrase(false)
-        }
-        else if (state.passphrase.length < 11) {
-            setValidatePassphrase(true)
-            setState({
-                ...state,
-                [name]: value
-            })
-        }
+        // if (state.passphrase.length === 11) {
+        //     setState({
+        //         ...state,
+        //         [name]: value
+        //     })
+        //     setValidatePassphrase(false)
+        // }
+        // else if (state.passphrase.length < 11) {
+        //     setValidatePassphrase(true)
+        //     setState({
+        //         ...state,
+        //         [name]: value
+        //     })
+        // }
     }
 
     return (
@@ -100,23 +112,23 @@ function SaveSeedPhrase() {
                 <div style={{marginTop: 5, width: '100%'}}>
                     <TextField
                         id="filled-read-only-input"
-                        label="New Passphrase"
+                        label="New Seed phrase"
                         multiline
                         rows={4}
                         style={{width: '100%'}}
                         variant="filled"
-                        name="passphrase"
-                        value={state.passphrase}
+                        name="seed_phrase"
+                        value={state.seed_phrase}
                         onChange={(e) => handleInput(e)}
-                        error={validatePassphrase}
-                        helperText="Passphrase must be 12 characters long."
+                        error={validateSeedPhrase}
+                        helperText="Seed phrase must be 12 words long."
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
                         onClick={() => storage()}
                         style={styles.button}
-                        disabled={validatePassphrase}
+                        disabled={validateSeedPhrase}
                     >
                         Ready
                     </Button>

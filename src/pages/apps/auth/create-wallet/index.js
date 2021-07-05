@@ -52,39 +52,23 @@ function CreateWallet() {
         const { name, value } = e.target
         // console.log(name)
         // console.log(value)
+        setState({
+            ...state,
+            [name]: value
+        })
 
-        if (name === 'passphrase')
+        if (name === 'confirmPassphrase')
         {
-            if (state.passphrase.length === 11) {
-                setState({
-                    ...state,
-                    [name]: value
-                })
-                setValidatePassphrase(false)
-            }
-            else if (state.passphrase.length < 11) {
-                setValidatePassphrase(true)
-                setState({
-                    ...state,
-                    [name]: value
-                })
-            }
+            if (value === state.passphrase)
+                setValidateConfirmPassphrase(false)
+            else
+                setValidateConfirmPassphrase(true)
         }
         else {
-            if (state.confirmPassphrase.length === 11) {
-                setState({
-                    ...state,
-                    [name]: value
-                })
+            if (value === state.confirmPassphrase)
                 setValidateConfirmPassphrase(false)
-            }
-            else if (state.confirmPassphrase.length < 11) {
+            else
                 setValidateConfirmPassphrase(true)
-                setState({
-                    ...state,
-                    [name]: value
-                })
-            }
         }
     }
     
@@ -102,40 +86,37 @@ function CreateWallet() {
                         gutterBottom
                         variant="h6"
                         component="h6">
-                        Choose a new passphrase
+                        Choose a password
                     </Typography>
                 </div>
                 <div style={{marginTop: 5, width: '100%'}}>
                     <TextField
                         id="filled-read-only-input"
-                        label="New Passphrase"
+                        label="New Password"
                         style={{width: '100%'}}
                         variant="filled"
                         name="passphrase"
                         value={state.passphrase}
                         onChange={(e) => handleInput(e)}
-                        error={validatePassphrase}
-                        helperText="Passphrase must be 12 characters long."
                     />
                 </div>
                 <div style={{marginTop: 5, width: '100%'}}>
                     <TextField
                         id="filled-read-only-input"
-                        label="Confirm Passphrase"
+                        label="Confirm Password"
                         style={{width: '100%'}}
                         variant="filled"
                         name="confirmPassphrase"
                         value={state.confirmPassphrase}
                         onChange={(e) => handleInput(e)}
                         error={validateConfirmPassphrase}
-                        helperText="Passphrase must be 12 characters long."
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
                         onClick={() => goTo(SaveSeedPhrase)}
                         style={styles.button}
-                        disabled={validatePassphrase && validateConfirmPassphrase}
+                        disabled={validateConfirmPassphrase}
                     >
                         Confirm
                     </Button>

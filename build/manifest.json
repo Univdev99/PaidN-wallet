@@ -1,6 +1,6 @@
 {
   "short_name": "Klipp - Boilerplate",
-  "name": "NFT Project",
+  "name": "Chrome Extension",
   "version": "0.1.0",
   "manifest_version": 2,
   "browser_action": {

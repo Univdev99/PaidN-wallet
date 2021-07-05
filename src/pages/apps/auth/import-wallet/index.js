@@ -42,66 +42,44 @@ function ImportWallet() {
     var inputValue = localStorage.getItem('initialText')
     const [text, setText] = useState(inputValue);
     const [state, setState] = useState({
-        seedPassphrase: '',
+        seedPhrase: '',
         passphrase: '',
         confirmPassphrase: ''
     });
-    const [validateSeedPassphrase, setValidateSeedPassphrase] = useState(true);
-    const [validatePassphrase, setValidatePassphrase] = useState(true);
+    const [validateSeedPhrase, setValidateSeedPhrase] = useState(true);
     const [validateConfirmPassphrase, setValidateConfirmPassphrase] = useState(true);
     
     const handleInput = (e) => {
         const { name, value } = e.target
         // console.log(name)
         // console.log(value)
+        setState({
+            ...state,
+            [name]: value
+        })
+    
+        
         switch (name) {
-            case 'seedPassphrase':
-                if (state.seedPassphrase.length === 11) {
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
-                    setValidateSeedPassphrase(false)
-                }
-                else if (state.seedPassphrase.length < 11) {
-                    setValidateSeedPassphrase(true)
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
-                }
+            case 'seedPhrase':
+                let split_value = value.split(" ")
+                let len = split_value.length;
+                console.log(split_value[len - 1])
+                if (len === 12 && split_value[len - 1] !== '') //15 words, hardcoded, probably change this to maxwords, or whatever.
+                    setValidateSeedPhrase(false)
+                else
+                    setValidateSeedPhrase(true)
                 break;
             case 'passphrase':
-                if (state.passphrase.length === 11) {
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
-                    setValidatePassphrase(false)
-                }
-                else if (state.passphrase.length < 11) {
-                    setValidatePassphrase(true)
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
-                }
+                if (value === state.confirmPassphrase)
+                    setValidateConfirmPassphrase(false)
+                else
+                    setValidateConfirmPassphrase(true)
                 break;
             case 'confirmPassphrase':
-                if (state.confirmPassphrase.length === 11) {
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
+                if (value === state.passphrase)
                     setValidateConfirmPassphrase(false)
-                }
-                else if (state.confirmPassphrase.length < 11) {
+                else
                     setValidateConfirmPassphrase(true)
-                    setState({
-                        ...state,
-                        [name]: value
-                    })
-                }
                 break;
             default:
                 break;
@@ -133,11 +111,11 @@ function ImportWallet() {
                         rows={2}
                         style={{width: '100%'}}
                         variant="filled"
-                        name="seedPassphrase"
-                        value={state.seedPassphrase}
+                        name="seedPhrase"
+                        value={state.seedPhrase}
                         onChange={(e) => handleInput(e)}
-                        error={validateSeedPassphrase}
-                        helperText="Passphrase must be 12 characters long."
+                        error={validateSeedPhrase}
+                        helperText="Passphrase must be 12 words long."
                     />
                 </div>
                 <div style={{marginTop: 20, width: '100%'}}>
@@ -146,40 +124,37 @@ function ImportWallet() {
                         gutterBottom
                         variant="h6"
                         component="h6">
-                        Enter new passphrase
+                        Entes Password
                     </Typography>
                 </div>
                 <div style={{marginTop: 2, width: '100%'}}>
                     <TextField
                         id="filled-read-only-input"
-                        label="New Passphrase"
+                        label="New Password"
                         style={{width: '100%'}}
                         variant="filled"
                         name="passphrase"
                         value={state.passphrase}
                         onChange={(e) => handleInput(e)}
-                        error={validatePassphrase}
-                        helperText="Passphrase must be 12 characters long."
                     />
                 </div>
                 <div style={{marginTop: 5, width: '100%'}}>
                     <TextField
                         id="filled-read-only-input"
-                        label="Confirm Passphrase"
+                        label="Confirm Password"
                         style={{width: '100%'}}
                         variant="filled"
                         name="confirmPassphrase"
                         value={state.confirmPassphrase}
                         onChange={(e) => handleInput(e)}
                         error={validateConfirmPassphrase}
-                        helperText="Passphrase must be 12 characters long."
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
                         onClick={() => goTo(Congratulations)}
                         style={styles.button}
-                        disabled={validateSeedPassphrase && validatePassphrase && validateConfirmPassphrase}
+                        disabled={validateSeedPhrase && validateConfirmPassphrase}
                     >
                         Import
                     </Button>
