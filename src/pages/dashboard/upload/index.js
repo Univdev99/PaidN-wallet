@@ -96,12 +96,7 @@ async function bindContracts() {
 };
 
 async function createDocumentNode(file) {
-    // this.setEstimateGasDialog = false;
-    // this.setTransactionStatusDialog = true;
-    // this.showTransactionCancelBtn = false;
-    // this.transationAddress = "";
-    // this.ipfsId = "";
-    // this.showVideo = false;
+
     console.log('Beginning of CREATEDOCUMENTNODE()');
 
     try {
