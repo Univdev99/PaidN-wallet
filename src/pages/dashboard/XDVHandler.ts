@@ -4,15 +4,10 @@ export default class XDVNodeProvider {
   //@ts-ignore
   async createWallet(accountName: string, passphrase: string): Promise <Wallet> {
     //account name standar en el react
-    const xdvWallet = new Wallet({ isWeb: true});
+    const xdvWallet = new Wallet();
+    const url = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
     console.log('Account Name: ', accountName);
     await xdvWallet.open(accountName, passphrase);
-    //enroll account must be deprecated 
-
-    await xdvWallet.enrollAccount({
-      passphrase,
-      accountName,
-    });
 
     let walletid;
 
@@ -23,16 +18,16 @@ export default class XDVNodeProvider {
     } else {
       walletid = acct.keystores[0].walletId;
     }
-    // const wallet = await xdvWallet.createEd25519({
-      //   walletId: acct.walletId,
-      // })
       
-    const wallet = await xdvWallet.createEd25519({
-      passphrase: passphrase,
+    const result = await xdvWallet.createEd25519({
+      rpcUrl: url,
       walletId: walletid,
-    })
+    });
 
-    return wallet as any;
+    debugger
+    await result.did.authenticate();
+    
+    return result as any;
     
   }
 

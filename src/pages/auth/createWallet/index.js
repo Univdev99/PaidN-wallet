@@ -9,7 +9,7 @@ import Card from '@material-ui/core/Card';
 import NavBar from '../../../components/layout/NavBar/index';
 import UploadNTF from '../../dashboard/upload/index';
 import XDVNodeProvider from '../../dashboard/XDVHandler';
-import DIDManager from '../../dashboard/DIDManager';
+
 import {
     goBack,
     goTo,
@@ -39,15 +39,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-let didManager = new DIDManager(); 
-let did = null;
-
-async function restoreDid(w) {
-    console.log('Inicio de RESTOREDID()');
-    did = await didManager.create3ID(w);
-    console.log('Final de RESTOREDID()');
-};
-
 async function createWallet(){
     console.log('Inicio de CREATEWALLET()');
     var input = document.getElementById('outlined-multiline-static');
@@ -57,13 +48,7 @@ async function createWallet(){
     const wallet = await xdvProvider.createWallet('mywallet1', inputValue);
 
     console.log('WALLET', wallet);
-
-    await restoreDid(wallet);
-
-    console.log("DID GENERATED");
-
     console.log('Output al finalizar CREATE WALLET', wallet);
-    debugger
     //TODO: fix NFT name
     goTo(UploadNTF);
 }

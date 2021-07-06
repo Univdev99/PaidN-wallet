@@ -11,7 +11,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import NavBar from '../../../components/layout/NavBar/index';
 import NTFDetails from '../details-ntf/index';
 
-import DIDManager from "../../dashboard/DIDManager";
+import { DIDManager } from "xdv-universal-wallet-core";
 import { IPFSManager } from "../IPFSManager";
 import { ethers } from "ethers";
 import { DID } from "dids";
