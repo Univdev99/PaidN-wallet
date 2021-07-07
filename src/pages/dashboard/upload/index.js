@@ -173,14 +173,16 @@ async function createDocumentNode(file) {
     }
 }
 
-function Upload() {
+function Upload(message) {
     const uploadInputRef = useRef(null);
     const history = useHistory();
     const classes = useStyles();
     console.log('Beginning of UPLOAD() component');
     web3 = new Web3();
     web3.eth.defaultAccount = '';
-
+    
+    console.log('Result Received', message);
+    debugger
     bindContracts();
 
     ipfs = new IPFSManager();

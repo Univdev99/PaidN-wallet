@@ -45,12 +45,15 @@ async function createWallet(){
     var inputValue = input.value;
     console.log('Input Value Del Componente: ',inputValue);
     const xdvProvider = new XDVNodeProvider();
-    const wallet = await xdvProvider.createWallet('mywallet1', inputValue);
-
-    console.log('WALLET', wallet);
-    console.log('Output al finalizar CREATE WALLET', wallet);
+    const result = await xdvProvider.createWallet('mywallet1', inputValue);
+    debugger
+    console.log('WALLET', result);
+    console.log('Output al finalizar CREATE WALLET', result);
     //TODO: fix NFT name
-    goTo(UploadNTF);
+    goTo(UploadNTF, {
+        wallet: result.walletEd25519, 
+        web3Prov: result.web3Prov
+    });
 }
 
 function NewWallet() {
