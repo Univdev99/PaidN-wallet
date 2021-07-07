@@ -74,7 +74,7 @@ let transationAddress = null;
 let indexes = null;
 
 
-async function bindContracts() {
+async function bindContracts(/*web3prov*/) {
     console.log('Beginning of BINDCONTRACTS()');
     ethersInstance = new ethers.providers.Web3Provider(
         web3.givenProvider

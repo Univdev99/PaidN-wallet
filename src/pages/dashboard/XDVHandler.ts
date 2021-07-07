@@ -26,7 +26,7 @@ export default class XDVNodeProvider {
       walletId: walletid,
     });
 
-    const web3Prov = await web3Provider.createWeb3Provider(result);
+    //const web3Prov = await web3Provider.createWeb3Provider(result);
 
     debugger;
     await result.did.authenticate();
