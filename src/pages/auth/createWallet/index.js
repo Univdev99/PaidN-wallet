@@ -46,7 +46,7 @@ async function createWallet(){
     console.log('Input Value Del Componente: ',inputValue);
     const xdvProvider = new XDVNodeProvider();
     const result = await xdvProvider.createWallet('mywallet1', inputValue);
-    debugger
+
     console.log('WALLET', result);
     console.log('Output al finalizar CREATE WALLET', result);
     //TODO: fix NFT name
