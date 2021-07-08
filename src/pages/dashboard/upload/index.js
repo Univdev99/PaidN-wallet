@@ -66,7 +66,6 @@ let web3 = null;
 let ethersContract = null;
 let contract = null;
 let mockContract;
-let daiContract = null;
 let ipfs = null;
 let did = null;
 let didManager = null;
@@ -74,15 +73,15 @@ let transationAddress = null;
 let indexes = null;
 
 
-async function bindContracts(/*web3prov*/) {
+async function bindContracts(web3Prov) {
     console.log('Beginning of BINDCONTRACTS()');
     ethersInstance = new ethers.providers.Web3Provider(
-        web3.givenProvider
+        web3Prov.web3.givenProvider
     );
     const contractAddress = "0x03659591c344e90fD926cf9E4b463C5530422698";
     const mockContractAddress = "0xeB398229cDBB348E6076fd89d488FD14a05cA3B8";
-    contract = new web3.eth.Contract(KLIP.abi, contractAddress);
-    mockContract = new web3.eth.Contract(
+    contract = new web3Prov.web3.eth.Contract(KLIP.abi, contractAddress);
+    mockContract = new web3Prov.web3.eth.Contract(
         MockCoin.abi,
         mockContractAddress
     );
@@ -91,18 +90,17 @@ async function bindContracts(/*web3prov*/) {
         KLIP.abi,
         ethersInstance.getSigner(0)
     );
-
     console.log('End of BINDCONTRACTS()');
 };
 
-async function createDocumentNode(file) {
+async function createDocumentNode(file, web3) {
 
     console.log('Beginning of CREATEDOCUMENTNODE()');
-
+    console.log('Local Account Adress', contract.defaultAccount)
+    debugger
     try {
         videoFile = new File([""], file);
 
-        debugger
         const ipfs = new IPFSManager();
         await ipfs.start();
         indexes = await ipfs.addVideoObject(did, videoFile);
@@ -110,8 +108,7 @@ async function createDocumentNode(file) {
         console.log("files", videoFile);
         transactionStatus = "Creating transaction on the blockchain...";
         const bob = contract.defaultAccount;
-
-        await daiContract.methods
+        await mockContract.methods
         .approve(contract._address, "1000000000000000000")
         .send({
             gasPrice: "22000000000",
@@ -124,7 +121,7 @@ async function createDocumentNode(file) {
           "1", // qty
             bob,
             did.id, //
-            web3.utils.fromUtf8(this.indexes),
+            web3.utils.fromUtf8(indexes),
             false, // encrypted
             "xdv",
             did.id
@@ -152,9 +149,6 @@ async function createDocumentNode(file) {
         console.log("document", document);
         //videoBase64 = root.value.content;
 
-        // this.loading = false;
-        // this.canUpload = false;
-        // this.close();
         console.log(txmint);
         // this.showTransactionCancelBtn = true;
         transationAddress = txmint.transactionHash;
@@ -179,12 +173,11 @@ function Upload(message) {
     const classes = useStyles();
     console.log('Beginning of UPLOAD() component');
     web3 = new Web3();
-    web3.eth.defaultAccount = '';
+    message.web3Prov.web3.eth.defaultAccount = message.web3Prov.web3.defaultAccount;
     
     console.log('Result Received', message);
-    debugger
-    bindContracts();
-
+    bindContracts(message.web3Prov);
+    did = message.wallet.did
     ipfs = new IPFSManager();
     didManager = new DIDManager();
     
@@ -199,7 +192,7 @@ function Upload(message) {
                     <div style={{marginTop: 20, display: 'flex', justifyContent: 'center', flexDirection: 'row'}}>
                         <input
                             ref={uploadInputRef}
-                            accept="video/*"
+                            accept="video/mp4"
                             className={classes.input}
                             id="contained-button-file"
                             multiple
@@ -239,7 +232,7 @@ function Upload(message) {
                         />
                     </div>
                     <div style={{marginTop: 20}}>
-                        <button onClick={() =>  createDocumentNode(uploadInputRef.current.value)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
+                        <button onClick={() =>  createDocumentNode(uploadInputRef.current.value, message.web3Prov.web3)} style={{ backgroundColor: "#62d7c5", height: 50, width: 150, border: '1px solid #62d7c5', color: 'white', borderRadius: 5, fontFamily: 'Roboto', fontSize: 16}}>
                             CONTINUE
                         </button>
                     </div>
