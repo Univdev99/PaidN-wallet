@@ -1,5 +1,5 @@
 // import React from 'react';
-import NewWallet from '../pages/auth/createWallet/index'
+import NewWallet from '../pages/apps/auth/create-wallet/index'
 import UploadNTF from '../pages/dashboard/upload/index'
 import NTFDetails from '../pages/dashboard/details-ntf/index'
 import SignedMedia from '../pages/dashboard/signedMedia/index'

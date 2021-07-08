@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import SaveSeedPhrase from "../save-seed-phrase/index.js";
+import UploadNTF from '../../dashboard/upload/index';
+import XDVNodeProvider from '../../../dashboard/XDVHandler';
 import {
     goBack,
     goTo,
@@ -60,15 +62,36 @@ function CreateWallet() {
         if (name === 'confirmPassphrase')
         {
             if (value === state.passphrase)
-                setValidateConfirmPassphrase(false)
+                setValidateConfirmPassphrase(true);
             else
-                setValidateConfirmPassphrase(true)
+                setValidateConfirmPassphrase(false);
         }
         else {
             if (value === state.confirmPassphrase)
-                setValidateConfirmPassphrase(false)
+                setValidateConfirmPassphrase(true);
             else
-                setValidateConfirmPassphrase(true)
+                setValidateConfirmPassphrase(false);
+        }
+    }
+
+
+    async function _createWallet(){
+        console.log('Inicio de CREATEWALLET()');
+        console.log(validateConfirmPassphrase);
+        if(validateConfirmPassphrase){
+            var inputValue = state.passphrase;
+            console.log('Input Value Del Componente: ',inputValue);
+            const xdvProvider = new XDVNodeProvider();
+            const result = await xdvProvider.createWallet('mywallet1', inputValue);
+            
+            console.log('WALLET', result.wallet);
+            console.log('Output al finalizar CREATE WALLET', result);
+            debugger;
+            //TODO: fix NFT name
+            goTo(UploadNTF, {
+                wallet: result.walletEd25519, 
+                web3Prov: result.web3Prov
+            });
         }
     }
     
@@ -102,21 +125,21 @@ function CreateWallet() {
                 </div>
                 <div style={{marginTop: 5, width: '100%'}}>
                     <TextField
-                        id="filled-read-only-input"
+                        id="filled-read-only-input2"
                         label="Confirm Password"
                         style={{width: '100%'}}
                         variant="filled"
                         name="confirmPassphrase"
                         value={state.confirmPassphrase}
                         onChange={(e) => handleInput(e)}
-                        error={validateConfirmPassphrase}
+                        error={!validateConfirmPassphrase}
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
-                        onClick={() => goTo(SaveSeedPhrase)}
+                        onClick={() => _createWallet()}
                         style={styles.button}
-                        disabled={validateConfirmPassphrase}
+                        disabled={!validateConfirmPassphrase}
                     >
                         Confirm
                     </Button>
