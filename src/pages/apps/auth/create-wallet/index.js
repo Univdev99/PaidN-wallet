@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import SaveSeedPhrase from "../save-seed-phrase/index.js";
 import UploadNTF from '../../dashboard/upload/index';
-import XDVNodeProvider from '../../../dashboard/XDVHandler';
+import XDVNodeProvider from '../../../../lib/XDVHandler';
 import {
     goBack,
     goTo,

@@ -12,7 +12,7 @@ import NavBar from '../../../components/layout/NavBar/index';
 import NTFDetails from '../details-ntf/index';
 
 import { DIDManager } from "xdv-universal-wallet-core";
-import { IPFSManager } from "../IPFSManager";
+import { IPFSManager } from "../../../lib/IPFSManager";
 import { ethers } from "ethers";
 import { DID } from "dids";
 import Web3 from "web3";
