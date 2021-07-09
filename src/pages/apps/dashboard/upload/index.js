@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import SetDetails from "../set-details/index.js";
-import Visor from "../visor/index.js"
+import Visor from "../visor/index.js";
 
 import {
     goBack,
@@ -144,6 +144,9 @@ async function createDocumentNode(file, web3) {
         const document = root.value;
         console.log("ROOT VALUE", root.value);
         console.log("document", document);
+        console.log("metadata", document.metadata);
+        console.log("url", document.metadata.videourl);
+        
         //videoBase64 = root.value.content;
 
         console.log(txmint);
@@ -151,6 +154,8 @@ async function createDocumentNode(file, web3) {
         transationAddress = txmint.transactionHash;
         ipfsId = indexes;
         transactionStatus = "";
+        let urlVideo = 'https://ipfs.io/ipfs/' + document.metadata.videourl;
+        goTo(Visor, {urlVideo});
       //await this.fetchDocuments();
 
         // this.instanceVideoPlayer(
@@ -160,7 +165,7 @@ async function createDocumentNode(file, web3) {
 
     } catch (e) {
         //Actualmente lo cargamos desde el catch pero debe moverse para arriba
-        let urlVideo = 'https://ipfs.io/ipfs/QmTAznyH583xUgEyY5zdrPB2LSGY7FUBPDddWKj58GmBgp';
+        let urlVideo = 'https://ipfs.io/ipfs/QmNMcSu2jUd8ACRnt6z854sZTHfrFyBB7bhrJWmyZiZQs8';
         goTo(Visor, {urlVideo})
         transactionStatus = "An error has occurred";
         console.log("confirmation error", e);

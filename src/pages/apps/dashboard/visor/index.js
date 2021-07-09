@@ -49,6 +49,7 @@ function Visor({urlVideo}) {
                     playing = {true}
                     />
                 </div>
+                {urlVideo}
                 <div style={{marginTop: 50}}>
                     <Button
                         onClick={() => goTo(Home)}
