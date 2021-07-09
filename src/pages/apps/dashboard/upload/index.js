@@ -97,7 +97,7 @@ async function createDocumentNode(file, web3) {
     console.log('Local Account Adress', contract.defaultAccount);
     try {
         videoFile = file[0];
-
+        debugger
         const ipfs = new IPFSManager();
         await ipfs.start();
         indexes = await ipfs.addVideoObject(did, videoFile);
@@ -152,16 +152,16 @@ async function createDocumentNode(file, web3) {
         ipfsId = indexes;
         transactionStatus = "";
       //await this.fetchDocuments();
-
+        debugger
         // this.instanceVideoPlayer(
         //     "https://ipfs.io/ipfs/" + root.value.metadata.videourl.toString()
         // ); 
 
+        //Actualmente lo cargamos desde el catch pero debe moverse para arriba
+        let urlVideo = 'https://ipfs.io/ipfs/'+document.videoUrl;
+        goTo(Visor, {urlVideo})
 
     } catch (e) {
-        //Actualmente lo cargamos desde el catch pero debe moverse para arriba
-        let urlVideo = 'https://ipfs.io/ipfs/QmTAznyH583xUgEyY5zdrPB2LSGY7FUBPDddWKj58GmBgp';
-        goTo(Visor, {urlVideo})
         transactionStatus = "An error has occurred";
         console.log("confirmation error", e);
     }
