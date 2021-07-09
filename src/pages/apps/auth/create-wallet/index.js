@@ -86,7 +86,6 @@ function CreateWallet() {
             
             console.log('WALLET', result.wallet);
             console.log('Output al finalizar CREATE WALLET', result);
-            debugger;
             //TODO: fix NFT name
             goTo(UploadNTF, {
                 wallet: result.walletEd25519, 

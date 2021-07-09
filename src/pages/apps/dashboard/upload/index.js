@@ -90,10 +90,9 @@ async function bindContracts(web3Prov) {
 async function createDocumentNode(file, web3) {
 
     console.log('Beginning of CREATEDOCUMENTNODE()');
-    console.log('Local Account Adress', contract.defaultAccount)
-    debugger
+    console.log('Local Account Adress', contract.defaultAccount);
     try {
-        videoFile = new File([""], file);
+        videoFile = file[0];
 
         const ipfs = new IPFSManager();
         await ipfs.start();
@@ -152,7 +151,7 @@ async function createDocumentNode(file, web3) {
 
         // this.instanceVideoPlayer(
         //     "https://ipfs.io/ipfs/" + root.value.metadata.videourl.toString()
-        // );
+        // ); 
 
 
     } catch (e) {
@@ -160,12 +159,18 @@ async function createDocumentNode(file, web3) {
         console.log("confirmation error", e);
     }
 }
+
+const onFileUpload = (files) => {
+    console.log(files);
+}
+
 function Upload(message) {
     const uploadInputRef = useRef(null);
     const history = useHistory();
     const classes = useStyles();
     var inputValue = localStorage.getItem('initialText')
     const [text, setText] = useState(inputValue);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     web3 = new Web3();
     message.web3Prov.web3.eth.defaultAccount = message.web3Prov.web3.defaultAccount;
     
@@ -185,12 +190,12 @@ function Upload(message) {
                 </Typography>
                 <div style={{marginTop: 20, width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                     <input
-                            ref={uploadInputRef}
                             accept="video/mp4"
                             className={classes.input}
-                            id="contained-button-file"
                             multiple
+                            id="contained-button-file"
                             type="file"
+                            onChange={(e) => setSelectedFiles(e.target.files)}
                     />
                     <label htmlFor="contained-button-file">
                         <Button
@@ -224,7 +229,7 @@ function Upload(message) {
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
-                        onClick={() =>  createDocumentNode(uploadInputRef.current.value, message.web3Prov.web3)}
+                        onClick={() => createDocumentNode(selectedFiles, message.web3Prov.web3)}
                         style={styles.button}
                     >
                         Upload
