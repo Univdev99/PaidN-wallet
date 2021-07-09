@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -30,6 +31,7 @@ let contract = null;
 let did = null;
 let videoFile = null;
 let indexes = null;
+let walletAddress = '';
 let transactionStatus='';
 let ethersContract = null;
 let mockContract;
@@ -72,8 +74,8 @@ async function bindContracts(web3Prov) {
     ethersInstance = new ethers.providers.Web3Provider(
         web3Prov.web3.givenProvider
     );
-    const contractAddress = "0x03659591c344e90fD926cf9E4b463C5530422698";
-    const mockContractAddress = "0xeB398229cDBB348E6076fd89d488FD14a05cA3B8";
+    const contractAddress = "0x7Ae751E890464648b222fE9D45e0DA190AaD16ca";
+    const mockContractAddress = "0x301Fe0CF20d1819D8F7eBAF3Ba80C805587d693D";
     contract = new web3Prov.web3.eth.Contract(KLIP.abi, contractAddress);
     mockContract = new web3Prov.web3.eth.Contract(
         MockCoin.abi,
@@ -171,12 +173,23 @@ function Upload(message) {
     var inputValue = localStorage.getItem('initialText')
     const [text, setText] = useState(inputValue);
     const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const copy = () => {
+        const el = document.createElement('input');
+        el.value = walletAddress;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
     web3 = new Web3();
     message.web3Prov.web3.eth.defaultAccount = message.web3Prov.web3.defaultAccount;
     
     console.log('Result Received', message);
     bindContracts(message.web3Prov);
     did = message.wallet.did;
+    walletAddress = contract.defaultAccount;
     ipfs = new IPFSManager();
     didManager = new DIDManager();
     
@@ -185,6 +198,16 @@ function Upload(message) {
             {/* <NavBar /> */}
         
             <div style={styles.content}>
+                <div style={{marginTop: 20, width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                    <div>My address</div>
+                    <div>
+                        {walletAddress}
+                        <button startIcon={<LibraryBooksIcon/>} onClick={ () => copy() }>
+                            Click    
+                        </button>
+                    </div>
+                    
+                </div>
                 <Typography style={{textAlign: 'center', color: "#444cea"}} gutterBottom variant="h4" component="h2">
                     Upload Content
                 </Typography>
