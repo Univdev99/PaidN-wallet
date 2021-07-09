@@ -1,6 +1,6 @@
 {
-  "short_name": "Klipp - Boilerplate",
-  "name": "Chrome Extension",
+  "short_name": "eShot - Extension",
+  "name": "eShot Extension",
   "version": "0.1.0",
   "manifest_version": 2,
   "browser_action": {

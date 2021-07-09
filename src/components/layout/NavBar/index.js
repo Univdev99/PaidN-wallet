@@ -5,7 +5,7 @@ function NavBar() {
 
     return (
         <nav style={styles.content}>
-            <h1 style={styles.title}>Klipp</h1>
+            <h1 style={styles.title}>eShot</h1>
         </nav>
     );
 }
