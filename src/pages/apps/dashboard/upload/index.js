@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import SetDetails from "../set-details/index.js";
+import Visor from "../visor/index.js"
+
 import {
     goBack,
     goTo,
@@ -157,6 +159,9 @@ async function createDocumentNode(file, web3) {
 
 
     } catch (e) {
+        //Actualmente lo cargamos desde el catch pero debe moverse para arriba
+        let urlVideo = 'https://ipfs.io/ipfs/QmTAznyH583xUgEyY5zdrPB2LSGY7FUBPDddWKj58GmBgp';
+        goTo(Visor, {urlVideo})
         transactionStatus = "An error has occurred";
         console.log("confirmation error", e);
     }
@@ -198,15 +203,16 @@ function Upload(message) {
     return (
         <div>
             {/* <NavBar /> */}
-        
+            <Typography style={{textAlign: 'center', color: "#444cea"}} gutterBottom variant="h4" component="h4">
+                    Address
+                </Typography>
             <div style={styles.content}>
-                <div style={{marginTop: 20, width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <div>My address</div>
-                    <div>
-                        {walletAddress}
-                        <button startIcon={<LibraryBooksIcon/>} onClick={ () => copy() }>
+                <div style={{marginTop: 20, width: '100%', display: 'flex', justifyContent: 'center'}}>
+                    <div style={{}}>
+                        <span style={{textOverflow: 'ellipsis', width:'50%'}}>{walletAddress}</span>
+                        <Button startIcon={<LibraryBooksIcon/>} style={styles.button} onClick={ () => copy() }>
                             {copied ? 'Copied!' : 'Copy'}    
-                        </button>
+                        </Button>
                     </div>
                     
                 </div>
