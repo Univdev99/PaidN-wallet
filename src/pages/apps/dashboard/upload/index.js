@@ -173,6 +173,7 @@ function Upload(message) {
     var inputValue = localStorage.getItem('initialText')
     const [text, setText] = useState(inputValue);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [copied, setCopy] = useState(false);
 
     const copy = () => {
         const el = document.createElement('input');
@@ -181,6 +182,7 @@ function Upload(message) {
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
+        setCopy(true);
     }
 
     web3 = new Web3();
@@ -203,7 +205,7 @@ function Upload(message) {
                     <div>
                         {walletAddress}
                         <button startIcon={<LibraryBooksIcon/>} onClick={ () => copy() }>
-                            Click    
+                            {copied ? 'Copied!' : 'Copy'}    
                         </button>
                     </div>
                     
