@@ -53,8 +53,8 @@ function Upload() {
           <Typography
             style={{ textAlign: "center", color: "#adadad" }}
             gutterBottom
-            variant="h7"
-            component="h7"
+            variant="h6"
+            component="h6"
           >
             Need help?{" "}
             <span style={{ color: "#444cea", fontWeight: "bold" }}>

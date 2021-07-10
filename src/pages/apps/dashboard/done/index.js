@@ -25,8 +25,8 @@ function Done() {
         <Typography
           style={{ textAlign: "center", color: "#444cea" }}
           gutterBottom
-          variant="h7"
-          component="h7"
+          variant="h6"
+          component="h6"
         >
           Text...
         </Typography>
