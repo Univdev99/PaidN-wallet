@@ -12,5 +12,6 @@
     "64": "favicon.ico",
     "128": "logo192.png"
   },
+  
   "content_security_policy": "script-src 'self' 'sha256-wVzQNv0E4xdZBquh0DM64KQ1aaaBd30hDN2REUgkdmI='; object-src 'self'",  "permissions": [ ]
 }
