@@ -1,16 +1,6 @@
 import './App.css';
-// import Login from "./pages/auth/access/index";
 import Login from "./pages/apps/auth/access/index";
-import routes from "./config/routes"
-import {
-    goBack,
-    goTo,
-    popToTop,
-    Link,
-    Router,
-    getCurrent,
-    getComponentStack,
-  } from 'react-chrome-extension-router';
+import { Router } from 'react-chrome-extension-router';
 
 function App() {
   return (
