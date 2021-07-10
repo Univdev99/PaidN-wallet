@@ -77,14 +77,12 @@ function CreateWallet() {
 
     async function _createWallet(){
         console.log('Inicio de CREATEWALLET()');
-        console.log(validateConfirmPassphrase);
         if(validateConfirmPassphrase){
             var inputValue = state.passphrase;
             console.log('Input Value Del Componente: ',inputValue);
             const xdvProvider = new XDVNodeProvider();
             const result = await xdvProvider.createWallet('mywallet1', inputValue);
             
-            console.log('WALLET', result.wallet);
             console.log('Output al finalizar CREATE WALLET', result);
             //TODO: fix NFT name
             goTo(UploadNTF, {

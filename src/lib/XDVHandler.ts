@@ -2,10 +2,10 @@ import { Wallet } from "xdv-universal-wallet-core";
 
 export default class XDVNodeProvider {
 
-  async createWallet(accountName: string, passphrase: string): Promise<Wallet> {
+  async createWallet(accountName: string, passphrase: string, mnemonic: string): Promise<Wallet> {
     const xdvWallet = new Wallet();
     const url = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-    console.log("Account Name: ", accountName);
+    console.log("Account Name: ", accountName, 'passphrase',passphrase);
     await xdvWallet.open(accountName, passphrase);
 
     let walletid;
@@ -13,7 +13,8 @@ export default class XDVNodeProvider {
     const acct = (await xdvWallet.getAccount()) as any;
 
     if (acct.keystores.length === 0) {
-      walletid = await xdvWallet.addWallet();
+      const options = { mnemonic };
+      walletid = await xdvWallet.addWallet(options);
     } else {
       walletid = acct.keystores[0].walletId;
     }

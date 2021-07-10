@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import UploadNTF from '../../dashboard/upload/index';
+import XDVNodeProvider from '../../../../lib/XDVHandler';
 import Congratulations from "../congratulations-import/index.js";
 import {
     goBack,
@@ -49,6 +51,25 @@ function ImportWallet() {
     const [validateSeedPhrase, setValidateSeedPhrase] = useState(true);
     const [validateConfirmPassphrase, setValidateConfirmPassphrase] = useState(true);
     
+
+    const UnlockWallet = async () => {
+        console.log('Inicio de IMPORTWALLET()');
+        if(validateConfirmPassphrase){
+            var inputValue = state.passphrase;
+            var inputValue2 = state.seedPhrase;
+            console.log('Input Value Del Componente: ',inputValue);
+            const xdvProvider = new XDVNodeProvider();
+            const result = await xdvProvider.createWallet('mywallet1', inputValue, inputValue2);
+
+            console.log('Output al finalizar IMPORT WALLET', result.walletEd25519);
+            
+            goTo(UploadNTF, {
+                wallet: result.walletEd25519, 
+                web3Prov: result.web3Prov
+            });
+        }
+    };
+
     const handleInput = (e) => {
         const { name, value } = e.target
         // console.log(name)
@@ -65,21 +86,21 @@ function ImportWallet() {
                 let len = split_value.length;
                 console.log(split_value[len - 1])
                 if (len === 12 && split_value[len - 1] !== '') //15 words, hardcoded, probably change this to maxwords, or whatever.
-                    setValidateSeedPhrase(false)
+                    setValidateSeedPhrase(true);
                 else
-                    setValidateSeedPhrase(true)
+                    setValidateSeedPhrase(false);
                 break;
             case 'passphrase':
                 if (value === state.confirmPassphrase)
-                    setValidateConfirmPassphrase(false)
+                    setValidateConfirmPassphrase(true);
                 else
-                    setValidateConfirmPassphrase(true)
+                    setValidateConfirmPassphrase(false);
                 break;
             case 'confirmPassphrase':
                 if (value === state.passphrase)
-                    setValidateConfirmPassphrase(false)
+                    setValidateConfirmPassphrase(true);
                 else
-                    setValidateConfirmPassphrase(true)
+                    setValidateConfirmPassphrase(false);
                 break;
             default:
                 break;
@@ -114,7 +135,7 @@ function ImportWallet() {
                         name="seedPhrase"
                         value={state.seedPhrase}
                         onChange={(e) => handleInput(e)}
-                        error={validateSeedPhrase}
+                        error={!validateSeedPhrase}
                         helperText="Passphrase must be 12 words long."
                     />
                 </div>
@@ -147,14 +168,14 @@ function ImportWallet() {
                         name="confirmPassphrase"
                         value={state.confirmPassphrase}
                         onChange={(e) => handleInput(e)}
-                        error={validateConfirmPassphrase}
+                        error={!validateConfirmPassphrase}
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Button
-                        onClick={() => goTo(Congratulations)}
+                        onClick={() => UnlockWallet()}
                         style={styles.button}
-                        disabled={validateSeedPhrase && validateConfirmPassphrase}
+                        disabled={!validateSeedPhrase && !validateConfirmPassphrase}
                     >
                         Import
                     </Button>
